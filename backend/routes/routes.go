@@ -1,10 +1,10 @@
 package routes
 
 import (
+	"dbon/db"
+	"dbon/helpers"
+	"dbon/table"
 	"net/http"
-	"wiki/db"
-	"wiki/helpers"
-	"wiki/table"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,9 +1,9 @@
 package middlewares
 
 import (
+	"dbon/db"
+	"dbon/table"
 	"net/http"
-	"wiki/db"
-	"wiki/table"
 
 	"github.com/gin-gonic/gin"
 )

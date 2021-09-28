@@ -1,10 +1,10 @@
 package db
 
 import (
+	"dbon/table"
 	"errors"
 	"io/ioutil"
 	"os"
-	"wiki/table"
 )
 
 var db string

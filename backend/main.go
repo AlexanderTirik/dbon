@@ -1,8 +1,8 @@
 package main
 
 import (
-	"wiki/middlewares"
-	"wiki/routes"
+	"dbon/middlewares"
+	"dbon/routes"
 
 	"github.com/gin-gonic/gin"
 )
