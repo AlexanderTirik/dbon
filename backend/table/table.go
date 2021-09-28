@@ -190,8 +190,6 @@ func isProvidedDataColsValid(t string, cols []string) bool {
 	sort.Strings(cols)
 	sort.Strings(colNamesArr)
 
-	fmt.Print(cols, colNamesArr)
-
 	return helpers.ArrEq(cols, colNamesArr)
 }
 
@@ -208,7 +206,6 @@ func JoinTables(t1 string, t2 string, on1 string, on2 string) ([]map[string]stri
 	for _, v1 := range d1 {
 		for _, v2 := range d2 {
 			if v1[on1] == v2[on2] {
-				fmt.Print(v1, v2)
 				result = append(result, helpers.JoinMaps(t1, v1, t2, v2))
 			}
 		}
