@@ -1,18 +1,20 @@
-package main
+package helpers
 
 import (
 	"errors"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 var validName = regexp.MustCompile("^[a-zA-Z0-9_]*$")
 var validColName = regexp.MustCompile("^[a-zA-Z0-9_]*$")
 var txtFileRegex = regexp.MustCompile(".txt$")
+var intervals = [][]int{{0, 256}, {0, 256}, {0, 256}}
 
-func validateName(input string) error {
+func ValidateName(input string) error {
 	isNameValidErr := validName.FindStringSubmatch(input)
-	if isNameValidErr == nil || len(input) == 0 || isTableNameExist(input) {
+	if isNameValidErr == nil || len(input) == 0 {
 		return errors.New("Invalid name")
 	}
 	return nil
@@ -56,5 +58,24 @@ func validateTxtFile(fileName string) error {
 	if isNameValidErr == nil {
 		return errors.New("Not txt")
 	}
+	return nil
+}
+
+func IsValidType(t string) bool {
+	return t == "integer" || t == "string" || t == "char" || t == "real" || t == "color" || t == "colorInvl"
+}
+
+func validateColor(input string, intervals [][]int) error {
+	rgb := strings.Split(input, ",")
+	if len(rgb) != 3 {
+		return errors.New("Invalid color")
+	}
+	for i, c := range rgb {
+		v, err := strconv.Atoi(c)
+		if err != nil && v >= intervals[i][0] && v <= intervals[i][1] {
+			return errors.New("Invalid color")
+		}
+	}
+
 	return nil
 }
