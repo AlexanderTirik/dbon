@@ -53,7 +53,7 @@ func DeleteDB(c *gin.Context) {
 
 func GetTableColNames(c *gin.Context) {
 	t := c.Param("table")
-	colNames, err := table.GetTableColNames(t)
+	colNames, err := table.GetTable(t)
 	if err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		c.Abort()

@@ -56,6 +56,13 @@ func DeleteTable(tableName string) error {
 	return nil
 }
 
+func GetTable(tableName string) (map[string]string, error) {
+	if _, ok := tables[tableName]; !ok {
+		return nil, errors.New("table doesn't exist")
+	}
+	return tables[tableName], nil
+}
+
 func GetTableColNames(tableName string) ([]string, error) {
 	if _, ok := tablesColNames[tableName]; !ok {
 		return nil, errors.New("table doesn't exist")
@@ -150,9 +157,15 @@ type TableMap struct {
 }
 
 func setReadedTable(tableMap TableMap) {
-	tables = tableMap.Tables
-	tablesColNames = tableMap.TablesColNames
-	tablesData = tableMap.TablesData
+	if len(tableMap.Tables) != 0 {
+		tables = tableMap.Tables
+		tablesColNames = tableMap.TablesColNames
+		tablesData = tableMap.TablesData
+	} else {
+		tables = make(map[string]map[string]string)
+		tablesColNames = make(map[string][]string)
+		tablesData = make(map[string][]map[string]string)
+	}
 }
 
 func fetchTablesFromFile(dbName string) TableMap {
@@ -209,6 +222,9 @@ func JoinTables(t1 string, t2 string, on1 string, on2 string) ([]map[string]stri
 				result = append(result, helpers.JoinMaps(t1, v1, t2, v2))
 			}
 		}
+	}
+	if len(result) == 0 {
+		return nil, errors.New("empty data")
 	}
 	return result, nil
 }
