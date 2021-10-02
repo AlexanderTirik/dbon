@@ -1,6 +1,7 @@
 package db
 
 import (
+	"dbon/helpers"
 	"dbon/table"
 	"errors"
 	"io/ioutil"
@@ -19,9 +20,13 @@ func isDBExist(db string) bool {
 
 func CreateDB(name string) error {
 	filename := name + ".txt"
-	if isDBExist(name) {
+	if err := helpers.ValidateName(name); err != nil {
+		return err
+	} else if isDBExist(name) {
 		return errors.New("DB alreay exist")
 	} else {
+		db = name
+		table.CleanTables()
 		ioutil.WriteFile(filename, []byte{}, 0600)
 	}
 	return nil
@@ -31,7 +36,7 @@ func FetchDB(name string) error {
 	if isDBExist(name) {
 		if db != name {
 			if db != "" {
-				table.SaveCurrentTables(name)
+				table.SaveCurrentTables(db)
 			}
 			table.ReadTables(name)
 			db = name

@@ -1,4 +1,6 @@
 import React from "react";
-const App = () => <></>;
+import Dashboard from "../scenes/Dashboard";
+
+const App = () => <Dashboard />;
 
 export default App;

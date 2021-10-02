@@ -36,7 +36,7 @@ func removeTxtFromName(fileName string) string {
 
 func GetAllTxtFiles() []string {
 	files, _ := ioutil.ReadDir("./")
-	var fileNames []string
+	fileNames := []string{}
 	for _, f := range files {
 		fileName := f.Name()
 		err := validateTxtFile(fileName)

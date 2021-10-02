@@ -16,8 +16,14 @@ var tablesColNames = make(map[string][]string)
 var tablesData = make(map[string][]map[string]string)
 
 func CreateTable(name string, colTypes map[string]string, colNames []string) error {
+	if err := helpers.ValidateName(name); err != nil {
+		return err
+	}
 	if _, ok := tables[name]; ok {
 		return errors.New("table already exist")
+	}
+	if len(colNames) == 0 {
+		return errors.New("empty table")
 	}
 	colTypesArr := helpers.GetMapKeys(colTypes)
 	colNamesArr := colNames
@@ -177,6 +183,7 @@ func fetchTablesFromFile(dbName string) TableMap {
 
 func ReadTables(dbName string) {
 	tableMap := fetchTablesFromFile(dbName)
+	fmt.Print(tableMap)
 	setReadedTable(tableMap)
 }
 
@@ -227,4 +234,11 @@ func JoinTables(t1 string, t2 string, on1 string, on2 string) ([]map[string]stri
 		return nil, errors.New("empty data")
 	}
 	return result, nil
+}
+
+func CleanTables() error {
+	tables = make(map[string]map[string]string)
+	tablesColNames = make(map[string][]string)
+	tablesData = make(map[string][]map[string]string)
+	return nil
 }

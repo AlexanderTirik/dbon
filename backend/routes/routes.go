@@ -26,14 +26,14 @@ type CreatedDB struct {
 func PostDB(c *gin.Context) {
 	var d CreatedDB
 	if err := c.BindJSON(&d); err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
 
 	err := db.CreateDB(d.Name)
 	if err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
@@ -44,10 +44,11 @@ func PostDB(c *gin.Context) {
 func DeleteDB(c *gin.Context) {
 	d := c.Param("db")
 	if err := db.RemoveDB(d); err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
+	table.CleanTables()
 	c.JSON(http.StatusOK, d)
 }
 
@@ -55,7 +56,7 @@ func GetTableColNames(c *gin.Context) {
 	t := c.Param("table")
 	colNames, err := table.GetTable(t)
 	if err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
@@ -71,12 +72,12 @@ type CreatedTable struct {
 func CreateTable(c *gin.Context) {
 	var t CreatedTable
 	if err := c.BindJSON(&t); err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
 	if err := table.CreateTable(t.TableName, t.ColTypes, t.ColNames); err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
@@ -85,11 +86,11 @@ func CreateTable(c *gin.Context) {
 func DeleteTable(c *gin.Context) {
 	t := c.Param("table")
 	if err := table.DeleteTable(t); err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"status": "success"})
 }
 
 type DataResponse struct {
@@ -101,7 +102,7 @@ func GetAllTableData(c *gin.Context) {
 	t := c.Param("table")
 	colNames, err := table.GetTableColNames(t)
 	if err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
@@ -116,7 +117,7 @@ func Join(c *gin.Context) {
 	on2 := c.Param("on2")
 	joinedData, err := table.JoinTables(t1, t2, on1, on2)
 	if err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
@@ -128,7 +129,7 @@ func GetTableData(c *gin.Context) {
 	t := c.Param("table")
 	data, err := table.GetData(t, id)
 	if err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
@@ -139,16 +140,16 @@ func PostData(c *gin.Context) {
 	t := c.Param("table")
 	var d map[string]string
 	if err := c.BindJSON(&d); err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
 	if err := table.PostData(t, d); err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"status": "success"})
 }
 
 func DeleteTableData(c *gin.Context) {
@@ -156,9 +157,9 @@ func DeleteTableData(c *gin.Context) {
 	t := c.Param("table")
 	err := table.DeleteData(t, id)
 	if err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
 		c.Abort()
 		return
 	}
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"status": "success"})
 }

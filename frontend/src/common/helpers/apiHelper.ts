@@ -42,9 +42,8 @@ const makeRequest = (method: FetchMethod) => async <T>(url: string, params?: IFe
   const domainUrl = `${env.urls.server}${url}`;
   const [fetchUrl, body] = method === FetchMethod.GET
     ? [getFetchUrl(domainUrl, params as ParsedQuery), undefined]
-    : [url, params];
+    : [domainUrl, params];
   const fetchOptions = getFetchOptions(method, body);
-
   const res = await fetch(fetchUrl, fetchOptions);
   await throwIfResponseFailed(res);
   return res.json() as Promise<T>;
