@@ -1,5 +1,5 @@
 import React, { FC, useReducer, useState } from "react";
-import { Button, Form, FormControl, Modal } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import { IDictionary } from "../../common/models/IDictionary";
 import { TableData } from "../../components/TableData";
 import { join } from "../../services/dataService";
