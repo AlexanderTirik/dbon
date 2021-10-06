@@ -12,7 +12,7 @@ func SetDB(c *gin.Context) {
 	d := c.Param("db")
 	err := db.FetchDB(d)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		c.Abort()
 		return
 	}

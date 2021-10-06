@@ -25,6 +25,7 @@ import { createData, deleteData, getData } from "../../services/dataService";
 import { TableData } from "../../components/TableData";
 import { AddDataModal } from "../../containers/AddDataModal";
 import { JoinTablesModal } from "../../containers/JoinTablesModal";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const [schemaState, dispatchSchema] = useReducer(
@@ -139,7 +140,8 @@ const Dashboard = () => {
 
   return (
     <div className={styles.dashboard}>
-      <Button onClick={() => showCreateDBModal(true)}>Create database</Button>
+      <h3 className={styles.header}>Work with <b>database</b></h3>
+      <Button onClick={() => showCreateDBModal(true)} className={styles.createButton}>Create database</Button>
       {modalState.showCreateDB ? (
         <CreateDBModal
           onClose={() => showCreateDBModal(false)}
@@ -153,11 +155,12 @@ const Dashboard = () => {
       />
       {schemaState.selectedDb ? (
         <>
-          <Button variant="danger" onClick={onDeleteDB}>
-            Delete DB
+          <Button variant="danger" onClick={onDeleteDB} className={styles.deleteButton}>
+            Delete db
           </Button>
-          <Button onClick={() => showCreateTableModal(true)}>
-            Create Table
+          <h3 className={styles.header}>Work with <b>table</b></h3>
+          <Button onClick={() => showCreateTableModal(true)} className={styles.createButton}>
+            Create table
           </Button>
         </>
       ) : null}
@@ -177,11 +180,12 @@ const Dashboard = () => {
           />
           {schemaState.selectedTable ? (
             <>
-              <Button variant="danger" onClick={onDeleteTable}>
-                Delete Table
+              <Button variant="danger" onClick={onDeleteTable} className={styles.deleteButton}>
+                Delete table
               </Button>
               <TableCols cols={schemaState.tableCols} />
-              <Button onClick={() => showAddDataModal(true)}>Add data</Button>
+              <h3 className={styles.header}>Work with <b>data</b></h3>
+              <Button onClick={() => showAddDataModal(true)} className={styles.createButton}>Add data</Button>
               {modalState.showAddData ? (
                 <AddDataModal
                   onClose={() => showAddDataModal(false)}
@@ -194,7 +198,7 @@ const Dashboard = () => {
                 data={schemaState.data}
                 onDelete={onDeleteData}
               />
-              <Button onClick={() => showJoinTablesModal(true)}>
+              <Button onClick={() => showJoinTablesModal(true)} className={styles.createButton}>
                 Join tables
               </Button>
               {modalState.joinTables ? (

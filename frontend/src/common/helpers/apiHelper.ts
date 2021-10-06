@@ -3,6 +3,7 @@ import { IFetchParams } from '../models/fetch/IFetchParams';
 import { FetchMethod } from '../enums/FetchMethod';
 import { IResponseError } from '../models/fetch/IResponseError';
 import { env } from '../../env';
+import { toast } from 'react-toastify';
 
 const getInitHeaders = (contentType = 'application/json', hasContent = true) => {
   const headers: HeadersInit = new Headers();
@@ -21,7 +22,7 @@ const getFetchOptions = (method: string, body?: IFetchParams) => ({
   body: body && JSON.stringify(body)
 });
 
-const throwIfResponseFailed = async (res: Response) => {
+const throwIfResponseFailed = async (res: Response): Promise<string | undefined> => {
   if (!res.ok) {
     if (res.status === 401) {
       return;
@@ -32,8 +33,12 @@ const throwIfResponseFailed = async (res: Response) => {
     };
     try {
       parsedException = await res.json();
+      if (parsedException.message) {
+        toast(parsedException.message);
+        return parsedException.message;
+      }
     } catch (err) {
-      throw parsedException;
+      throw(err)
     }
   }
 };
@@ -45,8 +50,13 @@ const makeRequest = (method: FetchMethod) => async <T>(url: string, params?: IFe
     : [domainUrl, params];
   const fetchOptions = getFetchOptions(method, body);
   const res = await fetch(fetchUrl, fetchOptions);
-  await throwIfResponseFailed(res);
-  return res.json() as Promise<T>;
+  const error = await throwIfResponseFailed(res);
+  
+  if (!error) {
+    return res.json() as Promise<T>;
+  } else {
+    throw error
+  }
 };
 
 const api = {

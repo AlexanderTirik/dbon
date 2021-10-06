@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button, Form, FormControl, Modal } from "react-bootstrap";
 import styles from "./styles.module.sass";
 
 interface IProps {
@@ -9,15 +9,15 @@ interface IProps {
 }
 
 export const SchemaButtonGroup: FC<IProps> = ({ data, selected, onClick }) => (
-  <ButtonGroup size="lg" className="mb-2">
-    {data.map((el) => (
-      <Button
-        variant="info"
-        className={selected === el ? styles.selected : undefined}
-        onClick={() => onClick(el)}
-      >
-        {el}
-      </Button>
-    ))}
-  </ButtonGroup>
+  <Form>
+    <FormControl
+      as="select"
+      onChange={(e) => onClick(e.target.value as string)}
+      value={selected}
+    >
+      {data.map((el) => (
+        <option value={el}>{el}</option>
+      ))}
+    </FormControl>
+  </Form>
 );

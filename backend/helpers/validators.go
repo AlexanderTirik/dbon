@@ -72,7 +72,7 @@ func validateColor(input string, intervals [][]int) error {
 	}
 	for i, c := range rgb {
 		v, err := strconv.Atoi(c)
-		if err != nil && v >= intervals[i][0] && v <= intervals[i][1] {
+		if err != nil || v < intervals[i][0] || v > intervals[i][1] {
 			return errors.New("Invalid color")
 		}
 	}

@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { Button, Table } from "react-bootstrap";
 import { IDictionary } from "../../common/models/IDictionary";
+import styles from "../../scenes/Dashboard/styles.module.sass";
 
 interface IProps {
   data?: IDictionary[];
@@ -29,7 +30,7 @@ export const TableData: FC<IProps> = ({ data = [], cols, onDelete }) => (
             ))}
             {onDelete ? (
               <td>
-                <Button variant="danger" onClick={() => onDelete(el["id"])}>
+                <Button variant="danger" onClick={() => onDelete(el["id"])} className={styles.deleteButton}>
                   Delete
                 </Button>
               </td>

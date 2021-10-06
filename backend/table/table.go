@@ -183,7 +183,6 @@ func fetchTablesFromFile(dbName string) TableMap {
 
 func ReadTables(dbName string) {
 	tableMap := fetchTablesFromFile(dbName)
-	fmt.Print(tableMap)
 	setReadedTable(tableMap)
 }
 
