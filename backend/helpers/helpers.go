@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"io/ioutil"
+	"dbon/fs"
 )
 
 func ArrEq(a []string, b []string) bool {
@@ -35,10 +35,9 @@ func removeTxtFromName(fileName string) string {
 }
 
 func GetAllTxtFiles() []string {
-	files, _ := ioutil.ReadDir("./")
+	files := fs.GetAllFileNames()
 	fileNames := []string{}
-	for _, f := range files {
-		fileName := f.Name()
+	for _, fileName := range files {
 		err := validateTxtFile(fileName)
 		if err == nil {
 			fileNames = append(fileNames, removeTxtFromName(fileName))

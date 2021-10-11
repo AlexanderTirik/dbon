@@ -1,11 +1,11 @@
 package table
 
 import (
+	"dbon/fs"
 	"dbon/helpers"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"sort"
 
 	"github.com/google/uuid"
@@ -175,7 +175,7 @@ func setReadedTable(tableMap TableMap) {
 }
 
 func fetchTablesFromFile(dbName string) TableMap {
-	body, _ := ioutil.ReadFile(dbName + ".txt")
+	body, _ := fs.Read(dbName)
 	var tableMap TableMap
 	json.Unmarshal(body, &tableMap)
 	return tableMap
@@ -188,9 +188,8 @@ func ReadTables(dbName string) {
 
 func SaveCurrentTables(dbName string) {
 	tableMap := TableMap{tables, tablesColNames, tablesData}
-	filename := dbName + ".txt"
 	json, _ := json.Marshal(tableMap)
-	ioutil.WriteFile(filename, json, 0600)
+	fs.Write(dbName, json)
 }
 
 func isProvidedDataColsValid(t string, cols []string) bool {

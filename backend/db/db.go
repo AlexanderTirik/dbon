@@ -1,33 +1,27 @@
 package db
 
 import (
+	"dbon/fs"
 	"dbon/helpers"
 	"dbon/table"
 	"errors"
-	"io/ioutil"
-	"os"
 )
 
 var db string
 
 func isDBExist(db string) bool {
-	filename := db + ".txt"
-	if _, err := os.Stat(filename); err == nil {
-		return true
-	}
-	return false
+	return fs.IsFileExist(db)
 }
 
 func CreateDB(name string) error {
-	filename := name + ".txt"
 	if err := helpers.ValidateName(name); err != nil {
 		return err
 	} else if isDBExist(name) {
-		return errors.New("DB alreay exist")
+		return errors.New("DB already exist")
 	} else {
 		db = name
 		table.CleanTables()
-		ioutil.WriteFile(filename, []byte{}, 0600)
+		fs.Write(name, []byte{})
 	}
 	return nil
 }
@@ -49,8 +43,7 @@ func FetchDB(name string) error {
 
 func RemoveDB(name string) error {
 	if isDBExist(name) {
-		filename := name + ".txt"
-		os.Remove(filename)
+		fs.Remove(name)
 		return nil
 	}
 	return errors.New("DB doesn't exist")
