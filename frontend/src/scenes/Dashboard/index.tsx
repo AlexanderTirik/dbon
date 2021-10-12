@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from "react";
 import { Button } from "react-bootstrap";
 import { CreateDBModal } from "../../containers/CreateDBModal";
-import { SchemaButtonGroup } from "../../components/SchemaButtonGroup";
+import { SchemaSelector } from "../../components/SchemaSelector";
 import { createDb, deleteDb, fetchDbs } from "../../services/dbService";
 import {
   createTable,
@@ -148,10 +148,10 @@ const Dashboard = () => {
           onCreate={onCreateDb}
         />
       ) : null}
-      <SchemaButtonGroup
+      <SchemaSelector
         selected={schemaState.selectedDb}
         data={schemaState.dbs}
-        onClick={onDbClick}
+        onSelect={onDbClick}
       />
       {schemaState.selectedDb ? (
         <>
@@ -173,10 +173,10 @@ const Dashboard = () => {
       ) : null}
       {schemaState.selectedDb ? (
         <>
-          <SchemaButtonGroup
+          <SchemaSelector
             selected={schemaState.selectedTable}
             data={schemaState.tables}
-            onClick={onTableClick}
+            onSelect={onTableClick}
           />
           {schemaState.selectedTable ? (
             <>
