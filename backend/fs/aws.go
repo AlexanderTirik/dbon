@@ -25,6 +25,7 @@ func awsWrite(name string, content []byte) error {
 	defer file.Close()
 	file.WriteAt(content, int64(len(content)))
 	file.Sync()
+	defer os.Remove(filename)
 	_, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(bucket),
 		Key:    aws.String(key + "/" + filename),
