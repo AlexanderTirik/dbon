@@ -1,13 +1,25 @@
 package main
 
 import (
+	"database/sql"
+	fssql "dbon/fs/sql"
 	"dbon/middlewares"
 	"dbon/routes"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	connStr := "user=postgres password=12345 dbname=dbon sslmode=disable"
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer db.Close()
+	fssql.Migrate(db)
+	fssql.DB = db
+
 	router := gin.Default()
 	setDB := middlewares.SetDB
 	saveDB := middlewares.SaveDB
