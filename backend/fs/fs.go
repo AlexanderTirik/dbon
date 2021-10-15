@@ -1,55 +1,69 @@
 package fs
 
-var system = "aws"
-var bucket = "bucketname"
-var key = "/"
+import (
+	"dbon/fs/aws"
+	"dbon/fs/filesystem"
+	"dbon/fs/sql"
+)
+
+var system = "sql"
 
 func Write(name string, content []byte) error {
 	switch system {
 	case "filesystem":
-		return filesystemWrite(name, content)
+		return filesystem.Write(name, content)
 	case "aws":
-		return awsWrite(name, content)
+		return aws.Write(name, content)
+	case "sql":
+		return sql.Write(name, content)
 	}
-	return filesystemWrite(name, content)
+	return filesystem.Write(name, content)
 }
 
 func Remove(name string) error {
 	switch system {
 	case "filesystem":
-		return filesystemRemove(name)
+		return filesystem.Remove(name)
 	case "aws":
-		return awsRemove(name)
+		return aws.Remove(name)
+	case "sql":
+		return sql.Remove(name)
 	}
-	return filesystemRemove(name)
+	return filesystem.Remove(name)
 }
 
 func IsFileExist(name string) bool {
 	switch system {
 	case "filesystem":
-		return filesystemIsFileExist(name)
+		return filesystem.IsFileExist(name)
 	case "aws":
-		return awsIsFileExist(name)
+		return aws.IsFileExist(name)
+	case "sql":
+		return sql.IsFileExist(name)
 	}
-	return filesystemIsFileExist(name)
+	return filesystem.IsFileExist(name)
 }
 
 func GetAllFileNames() []string {
 	switch system {
 	case "filesystem":
-		return filesystemGetAllFileNames()
+		return filesystem.GetAllFileNames()
 	case "aws":
-		return awsGetAllFileNames()
+		return aws.GetAllFileNames()
+	case "sql":
+		return sql.GetAllFileNames()
 	}
-	return filesystemGetAllFileNames()
+	return filesystem.GetAllFileNames()
 }
 
 func Read(name string) ([]byte, error) {
 	switch system {
 	case "filesystem":
-		return filesystemRead(name)
+		return filesystem.Read(name)
 	case "aws":
-		return awsRead(name)
+		return aws.Read(name)
+	case "sql":
+		return sql.Read(name)
 	}
-	return filesystemRead(name)
+	return filesystem.Read(name)
 }
