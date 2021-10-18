@@ -3,10 +3,11 @@ package fs
 import (
 	"dbon/fs/aws"
 	"dbon/fs/filesystem"
+	"dbon/fs/mongo"
 	"dbon/fs/sql"
 )
 
-var systemType = "sql"
+var systemType = "mongo"
 
 type CRUD interface {
 	Write(name string, content []byte) error
@@ -24,6 +25,8 @@ func getDBSaver() CRUD {
 		return aws.Aws{}
 	case "sql":
 		return sql.Sql{}
+	case "mongo":
+		return mongo.Mongo{}
 	}
 	return filesystem.Filesystem{}
 }
