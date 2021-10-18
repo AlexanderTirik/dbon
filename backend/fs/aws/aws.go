@@ -14,6 +14,8 @@ import (
 var bucket = "alextirikbucket"
 var key = "/"
 
+type Aws struct{}
+
 func getSession() *session.Session {
 	sess, _ := session.NewSession(&aws.Config{
 		Region: aws.String("us-east-2"),
@@ -21,7 +23,7 @@ func getSession() *session.Session {
 	return sess
 }
 
-func Write(name string, content []byte) error {
+func (s Aws) Write(name string, content []byte) error {
 	uploader := s3manager.NewUploader(getSession())
 	filename := name + ".txt"
 	file, _ := os.Create(filename)
@@ -37,7 +39,7 @@ func Write(name string, content []byte) error {
 	return err
 }
 
-func Remove(name string) error {
+func (s Aws) Remove(name string) error {
 	svc := s3.New(getSession())
 	_, err := svc.DeleteObject(&s3.DeleteObjectInput{
 		Bucket: aws.String(bucket),
@@ -46,7 +48,7 @@ func Remove(name string) error {
 	return err
 }
 
-func Read(name string) ([]byte, error) {
+func (s Aws) Read(name string) ([]byte, error) {
 	filename := name + ".txt"
 	file, _ := os.Create(filename)
 
@@ -64,7 +66,7 @@ func Read(name string) ([]byte, error) {
 	return data, err
 }
 
-func GetAllFileNames() []string {
+func (s Aws) GetAllFileNames() []string {
 	svc := s3.New(getSession())
 	resp, _ := svc.ListObjectsV2(&s3.ListObjectsV2Input{
 		Bucket: aws.String(bucket),
@@ -77,7 +79,7 @@ func GetAllFileNames() []string {
 	return fileNames
 }
 
-func IsFileExist(name string) bool {
-	_, err := Read(name)
+func (s Aws) IsFileExist(name string) bool {
+	_, err := Aws{}.Read(name)
 	return err == nil
 }

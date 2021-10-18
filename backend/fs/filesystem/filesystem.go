@@ -5,15 +5,17 @@ import (
 	"os"
 )
 
-func Write(name string, content []byte) error {
+type Filesystem struct{}
+
+func (s Filesystem) Write(name string, content []byte) error {
 	return ioutil.WriteFile(name+".txt", []byte{}, 0600)
 }
 
-func Read(name string) ([]byte, error) {
+func (s Filesystem) Read(name string) ([]byte, error) {
 	return ioutil.ReadFile(name + ".txt")
 }
 
-func GetAllFileNames() []string {
+func (s Filesystem) GetAllFileNames() []string {
 	files, _ := ioutil.ReadDir("./")
 	fileNames := []string{}
 	for _, f := range files {
@@ -22,11 +24,11 @@ func GetAllFileNames() []string {
 	return fileNames
 }
 
-func Remove(name string) error {
+func (s Filesystem) Remove(name string) error {
 	return os.Remove(name + ".txt")
 }
 
-func IsFileExist(name string) bool {
+func (s Filesystem) IsFileExist(name string) bool {
 	_, err := os.Stat(name + ".txt")
 	return err == nil
 }

@@ -9,7 +9,9 @@ import (
 
 var DB *sql.DB
 
-func Write(name string, content []byte) error {
+type Sql struct{}
+
+func (s Sql) Write(name string, content []byte) error {
 	name = name + ".txt"
 	script := `INSERT INTO dbs (name,data)
 	VALUES ($1, $2)
@@ -19,14 +21,14 @@ func Write(name string, content []byte) error {
 	return err
 }
 
-func Remove(name string) error {
+func (s Sql) Remove(name string) error {
 	name = name + ".txt"
 	script := `DELETE FROM dbs WHERE name=$1;`
 	_, err := DB.Exec(script, name)
 	return err
 }
 
-func Read(name string) ([]byte, error) {
+func (s Sql) Read(name string) ([]byte, error) {
 	name = name + ".txt"
 	script := `SELECT data FROM dbs WHERE name=$1;`
 	row := DB.QueryRow(script, name)
@@ -40,7 +42,7 @@ func Read(name string) ([]byte, error) {
 	return []byte(data), nil
 }
 
-func GetAllFileNames() []string {
+func (s Sql) GetAllFileNames() []string {
 	var fileNames []string
 
 	rows, _ := DB.Query("SELECT name FROM dbs")
@@ -53,8 +55,8 @@ func GetAllFileNames() []string {
 	return fileNames
 }
 
-func IsFileExist(name string) bool {
-	_, err := Read(name)
+func (s Sql) IsFileExist(name string) bool {
+	_, err := Sql{}.Read(name)
 	return err == nil
 }
 
