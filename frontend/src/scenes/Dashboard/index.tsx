@@ -149,6 +149,7 @@ const Dashboard = () => {
         />
       ) : null}
       <SchemaSelector
+        testId="db-selector"
         selected={schemaState.selectedDb}
         data={schemaState.dbs}
         onSelect={onDbClick}
@@ -174,6 +175,7 @@ const Dashboard = () => {
       {schemaState.selectedDb ? (
         <>
           <SchemaSelector
+            testId="table-selector"
             selected={schemaState.selectedTable}
             data={schemaState.tables}
             onSelect={onTableClick}
@@ -194,6 +196,7 @@ const Dashboard = () => {
                 />
               ) : null}
               <TableData
+                testId="dashboard-data"
                 cols={Object.keys(schemaState.tableCols || {})}
                 data={schemaState.data}
                 onDelete={onDeleteData}

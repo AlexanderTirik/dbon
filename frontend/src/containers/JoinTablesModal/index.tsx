@@ -57,6 +57,7 @@ export const JoinTablesModal: FC<IProps> = ({ onClose, db, tables }) => {
           1
           <Form.Control
             as="select"
+            data-test-id="first-join-table-select"
             onChange={(e) => setFirstTable(e.target.value)}
             value={joinState.firstTable}
           >
@@ -68,6 +69,7 @@ export const JoinTablesModal: FC<IProps> = ({ onClose, db, tables }) => {
           {joinState.firstTable ? (
             <Form.Control
               as="select"
+              data-test-id="first-join-col-select"
               onChange={(e) => setFirstCol(e.target.value)}
               value={joinState.firstCol}
             >
@@ -80,6 +82,7 @@ export const JoinTablesModal: FC<IProps> = ({ onClose, db, tables }) => {
           2
           <Form.Control
             as="select"
+            data-test-id="second-join-table-select"
             onChange={(e) => setSecondTable(e.target.value)}
             value={joinState.secondTable}
           >
@@ -91,6 +94,7 @@ export const JoinTablesModal: FC<IProps> = ({ onClose, db, tables }) => {
           {joinState.secondTable ? (
             <Form.Control
               as="select"
+              data-test-id="second-join-col-select"
               onChange={(e) => setSecondCol(e.target.value)}
               value={joinState.secondCol}
             >
@@ -102,7 +106,7 @@ export const JoinTablesModal: FC<IProps> = ({ onClose, db, tables }) => {
           ) : null}
         </Form>
         {data.length ? (
-          <TableData cols={Object.keys(data[0])} data={data} />
+          <TableData testId="join-data" cols={Object.keys(data[0])} data={data} />
         ): null}
       </Modal.Body>
 

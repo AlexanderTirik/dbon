@@ -7,7 +7,7 @@ interface IProps {
 }
 
 export const TableCols: FC<IProps> = ({ cols = {} }) => (
-  <Table striped bordered hover>
+  <Table striped bordered hover data-test-id="table-cols">
     <thead>
       <tr>
         <th>#</th>

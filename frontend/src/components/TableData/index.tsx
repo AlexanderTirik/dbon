@@ -1,21 +1,23 @@
 import React, { FC } from "react";
 import { Button, Table } from "react-bootstrap";
 import { IDictionary } from "../../common/models/IDictionary";
-import styles from "../../scenes/Dashboard/styles.module.sass";
+import dsStyles from "../../scenes/Dashboard/styles.module.sass";
+import styles from "./styles.module.sass";
 
 interface IProps {
   data?: IDictionary[];
   cols: string[];
+  testId?: string;
   onDelete?: (id: string) => void;
 }
 
-export const TableData: FC<IProps> = ({ data = [], cols, onDelete }) => (
-  <Table striped bordered hover>
+export const TableData: FC<IProps> = ({ data = [], cols, testId, onDelete }) => (
+  <Table striped bordered hover data-test-id={testId}>
     <thead>
       <tr>
-        <th>#</th>
+        <th className={styles.tableCell}>#</th>
         {cols.map((col) => (
-          <th>{col}</th>
+          <th className={styles.tableCell}>{col}</th>
         ))}
         {onDelete ? <th>Delete</th> : null}
       </tr>
@@ -24,13 +26,13 @@ export const TableData: FC<IProps> = ({ data = [], cols, onDelete }) => (
       {data.map((el, i) => {
         return (
           <tr>
-            <td>{i + 1}</td>
+            <td className={styles.tableCell}>{i + 1}</td>
             {cols.map((col) => (
-              <td>{el[col]}</td>
+              <td className={styles.tableCell}>{el[col]}</td>
             ))}
             {onDelete ? (
               <td>
-                <Button variant="danger" onClick={() => onDelete(el["id"])} className={styles.deleteButton}>
+                <Button variant="danger" onClick={() => onDelete(el["id"])} className={dsStyles.deleteButton}>
                   Delete
                 </Button>
               </td>

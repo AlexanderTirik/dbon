@@ -4,11 +4,12 @@ import { Button, Form, FormControl } from "react-bootstrap";
 interface IProps {
   data: string[];
   selected?: string;
+  testId?: string;
   onSelect: (el: string) => void;
 }
 
-export const SchemaSelector: FC<IProps> = ({ data, selected, onSelect }) => (
-  <div>
+export const SchemaSelector: FC<IProps> = ({ data, selected, testId, onSelect }) => (
+  <div data-test-id={testId}>
     <Form>
       <FormControl
         as="select"

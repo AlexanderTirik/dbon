@@ -45,6 +45,7 @@ export const CreateTableModal: FC<IProps> = ({ onCreate, onClose }) => {
               <FormControl
                 onChange={(e) => setColName(e.target.value)}
                 placeholder="Column name"
+                data-test-id="col-name"
               />
               <Form.Control
                 as="select"

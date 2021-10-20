@@ -25,10 +25,11 @@ export const AddDataModal: FC<IProps> = ({ cols, onCreate, onClose }) => {
           <>
             {Object.entries(cols).map(([k, v]) => (
               <>
-                <Form.Label>{k}</Form.Label>
+                <Form.Label htmlFor={`${k}-input`}>{k}</Form.Label>
                 <FormControl
                   onChange={(e) => onChangeData(k, e.target.value)}
                   placeholder={v}
+                  name={`${k}-input`}
                 />
               </>
             ))}
