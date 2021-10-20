@@ -43,6 +43,7 @@ func FetchDB(name string) error {
 
 func RemoveDB(name string) error {
 	if isDBExist(name) {
+		db = ""
 		fs.Remove(name)
 		return nil
 	}
